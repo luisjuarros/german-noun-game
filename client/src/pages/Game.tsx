@@ -25,13 +25,25 @@ export default function Game() {
     const correct = gender === currentWord.gender;
     setIsCorrect(correct);
 
-    if (!correct && !incorrectWords.includes(currentWord)) {
-      setIncorrectWords(prev => [...prev, currentWord]);
+    if (!correct) {
+      if (!incorrectWords.includes(currentWord)) {
+        setIncorrectWords(prev => [...prev, currentWord]);
+      }
+      toast({
+        variant: "destructive",
+        title: "Incorrect!",
+        description: `The correct article for "${currentWord.word}" is "${currentWord.gender}"`
+      });
+    } else {
+      toast({
+        title: "Correct!",
+        description: `Well done! "${currentWord.gender} ${currentWord.word}" is correct.`
+      });
     }
 
     setTimeout(() => {
       nextWord();
-    }, 1000);
+    }, 1500); // Increased delay to give time to read the toast
   };
 
   const nextWord = useCallback(() => {
