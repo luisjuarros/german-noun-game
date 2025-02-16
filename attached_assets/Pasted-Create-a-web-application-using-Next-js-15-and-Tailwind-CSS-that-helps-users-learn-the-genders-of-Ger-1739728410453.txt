@@ -1,0 +1,44 @@
+Create a web application using Next.js 15 and Tailwind CSS that helps users learn the genders of German nouns through a fun, interactive game.
+
+Requirements:
+
+Game Mechanics:
+
+The game consists of a round of 20 German nouns.
+For each noun, display it prominently at the top of the page.
+Below the noun, show three buttons labeled "der", "die", and "das".
+When a user clicks one of the buttons:
+If the selected button matches the correct gender of the noun, mark it as correct and proceed to the next noun.
+If the answer is incorrect, store that noun to be retried at the end of the round.
+After cycling through all 20 nouns, any nouns answered incorrectly should be re-presented to the user until they are all answered correctly.
+User Interface:
+
+Use Tailwind CSS for styling to create a clean, responsive, and user-friendly interface.
+Optionally, include a progress bar or counter to show the user's progress through the round.
+Provide immediate visual feedback (e.g., color changes, messages) indicating whether the user's answer was correct or incorrect.
+Deployment:
+
+Ensure the application is configured to run on Replit.
+Use Next.js 15 as your framework for both server-side and client-side code.
+Additional Optional Features:
+
+After the round is completed, display a summary of the nouns that were initially answered incorrectly.
+Include a "Restart Game" button to allow the user to play another round.
+Animate the transition between nouns for an enhanced user experience.
+Project Structure:
+
+Organize your project with clear separation between components, pages, and styles.
+Use React state and hooks to manage game state (e.g., current noun, list of incorrect nouns, progress).
+Example Flow:
+
+The game starts with the first noun displayed.
+The user selects a gender by clicking one of the buttons.
+If correct, the game immediately displays the next noun.
+If incorrect, the noun is added to a "retry" list.
+After all 20 nouns have been attempted, the game goes through any incorrectly answered nouns until all are answered correctly.
+A final screen shows the completion of the round with an option to restart.
+Implementation Notes:
+
+Consider creating a JSON file or an array in your code containing 20 nouns and their correct genders to be used during the game.
+Use state management (e.g., useState in React) to track the current noun, user responses, and retry logic.
+Ensure that the UI is fully responsive to provide a smooth experience on both desktop and mobile devices.
