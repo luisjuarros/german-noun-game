@@ -6,6 +6,8 @@ import { GermanNoun, germanNouns } from "@/data/nouns";
 import { GenderButton } from "@/components/GenderButton";
 import { ProgressBar } from "@/components/ProgressBar";
 import { RefreshCcw } from "lucide-react";
+import { useLanguage } from "@/lib/LanguageContext";
+import { translations } from "@/lib/translations";
 
 export default function Game() {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -14,10 +16,13 @@ export default function Game() {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [gameComplete, setGameComplete] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
+  const { language } = useLanguage();
 
   const currentWord = gameComplete && incorrectWords.length > 0
     ? incorrectWords[currentWordIndex]
     : germanNouns[currentWordIndex];
+
+  const translation = translations[currentWord.translation ?? '']?.[language] ?? currentWord.translation;
 
   const handleGenderSelect = (gender: string) => {
     setSelectedGender(gender);
@@ -65,7 +70,6 @@ export default function Game() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative">
-      {/* Feedback Overlay */}
       <AnimatePresence>
         {showFeedback && (
           <motion.div
@@ -96,7 +100,7 @@ export default function Game() {
             >
               <h2 className="text-4xl font-bold mb-2">{currentWord.word}</h2>
               <p className="text-lg text-muted-foreground mb-1">{currentWord.plural}</p>
-              <p className="text-sm text-muted-foreground">{currentWord.translation}</p>
+              <p className="text-sm text-muted-foreground">{translation}</p>
             </motion.div>
           </AnimatePresence>
 
