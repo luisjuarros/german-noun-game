@@ -95,7 +95,8 @@ export default function Game() {
               className="text-center"
             >
               <h2 className="text-4xl font-bold mb-2">{currentWord.word}</h2>
-              <p className="text-muted-foreground">{currentWord.translation}</p>
+              <p className="text-lg text-muted-foreground mb-1">{currentWord.plural}</p>
+              <p className="text-sm text-muted-foreground">{currentWord.translation}</p>
             </motion.div>
           </AnimatePresence>
 
