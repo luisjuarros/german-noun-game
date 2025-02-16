@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { GermanNoun, germanNouns } from "@/data/nouns";
 import { GenderButton } from "@/components/GenderButton";
 import { ProgressBar } from "@/components/ProgressBar";
-import { useToast } from "@/hooks/use-toast";
 import { RefreshCcw } from "lucide-react";
 
 export default function Game() {
@@ -14,7 +13,7 @@ export default function Game() {
   const [selectedGender, setSelectedGender] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [gameComplete, setGameComplete] = useState(false);
-  const { toast } = useToast();
+  const [showFeedback, setShowFeedback] = useState(false);
 
   const currentWord = gameComplete && incorrectWords.length > 0
     ? incorrectWords[currentWordIndex]
@@ -24,26 +23,16 @@ export default function Game() {
     setSelectedGender(gender);
     const correct = gender === currentWord.gender;
     setIsCorrect(correct);
+    setShowFeedback(true);
 
-    if (!correct) {
-      if (!incorrectWords.includes(currentWord)) {
-        setIncorrectWords(prev => [...prev, currentWord]);
-      }
-      toast({
-        variant: "destructive",
-        title: "Incorrect!",
-        description: `The correct article for "${currentWord.word}" is "${currentWord.gender}"`
-      });
-    } else {
-      toast({
-        title: "Correct!",
-        description: `Well done! "${currentWord.gender} ${currentWord.word}" is correct.`
-      });
+    if (!correct && !incorrectWords.includes(currentWord)) {
+      setIncorrectWords(prev => [...prev, currentWord]);
     }
 
     setTimeout(() => {
+      setShowFeedback(false);
       nextWord();
-    }, 1500); // Increased delay to give time to read the toast
+    }, 500);
   };
 
   const nextWord = useCallback(() => {
@@ -54,10 +43,6 @@ export default function Game() {
       if (currentWordIndex < incorrectWords.length - 1) {
         setCurrentWordIndex(prev => prev + 1);
       } else if (incorrectWords.length > 0) {
-        toast({
-          title: "Round Complete!",
-          description: `You got ${germanNouns.length - incorrectWords.length} words correct on the first try!`,
-        });
         setIncorrectWords([]);
         setGameComplete(false);
         setCurrentWordIndex(0);
@@ -67,14 +52,8 @@ export default function Game() {
     } else {
       setGameComplete(true);
       setCurrentWordIndex(0);
-      if (incorrectWords.length === 0) {
-        toast({
-          title: "Perfect Score!",
-          description: "Congratulations! You got all words correct!",
-        });
-      }
     }
-  }, [currentWordIndex, gameComplete, incorrectWords.length, toast]);
+  }, [currentWordIndex, gameComplete, incorrectWords.length]);
 
   const restartGame = () => {
     setCurrentWordIndex(0);
@@ -85,8 +64,22 @@ export default function Game() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
-      <Card className="w-full max-w-lg">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative">
+      {/* Feedback Overlay */}
+      <AnimatePresence>
+        {showFeedback && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.3 }}
+            exit={{ opacity: 0 }}
+            className={`absolute inset-0 z-10 ${
+              isCorrect ? "bg-green-500" : "bg-red-500"
+            }`}
+          />
+        )}
+      </AnimatePresence>
+
+      <Card className="w-full max-w-lg relative z-20">
         <CardContent className="pt-6 flex flex-col items-center gap-8">
           <ProgressBar 
             current={gameComplete ? incorrectWords.length - currentWordIndex : currentWordIndex + 1} 
