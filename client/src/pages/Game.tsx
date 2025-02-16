@@ -8,6 +8,7 @@ import { ProgressBar } from "@/components/ProgressBar";
 import { RefreshCcw } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "@/lib/translations";
+import { Mascot } from "@/components/Mascot";
 
 export default function Game() {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -16,6 +17,7 @@ export default function Game() {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [gameComplete, setGameComplete] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [mascotState, setMascotState] = useState<'idle' | 'happy' | 'encouraging'>('idle');
   const { language } = useLanguage();
 
   const currentWord = gameComplete && incorrectWords.length > 0
@@ -30,12 +32,15 @@ export default function Game() {
     setIsCorrect(correct);
     setShowFeedback(true);
 
+    setMascotState(correct ? 'happy' : 'encouraging');
+
     if (!correct && !incorrectWords.includes(currentWord)) {
       setIncorrectWords(prev => [...prev, currentWord]);
     }
 
     setTimeout(() => {
       setShowFeedback(false);
+      setMascotState('idle');
       nextWord();
     }, 500);
   };
@@ -126,6 +131,7 @@ export default function Game() {
           </Button>
         </CardContent>
       </Card>
+      <Mascot state={mascotState} />
     </div>
   );
 }
