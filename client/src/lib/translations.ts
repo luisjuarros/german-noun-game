@@ -1,5 +1,44 @@
 import { SupportedLanguage } from '@/types/languages';
 
+export const uiTranslations: Record<string, Record<SupportedLanguage, string>> = {
+  'filter_label': {
+    en: 'Filter by type of words',
+    es: 'Filtrar por tipo de palabras',
+    fr: 'Filtrer par type de mots',
+    it: 'Filtra per tipo di parole'
+  },
+  'sort_label': {
+    en: 'Sort games by',
+    es: 'Ordenar juegos por',
+    fr: 'Trier les jeux par',
+    it: 'Ordina giochi per'
+  },
+  'all_types': {
+    en: 'All types',
+    es: 'Todos los tipos',
+    fr: 'Tous les types',
+    it: 'Tutti i tipi'
+  },
+  'most_popular': {
+    en: 'Most Popular',
+    es: 'Más populares',
+    fr: 'Plus populaires',
+    it: 'Più popolari'
+  },
+  'practice_words': {
+    en: 'Practice {count} words related to {category}',
+    es: 'Practica {count} palabras relacionadas con {category}',
+    fr: 'Pratiquez {count} mots liés à {category}',
+    it: 'Pratica {count} parole relative a {category}'
+  },
+  'page_title': {
+    en: 'Vocabulary',
+    es: 'Vocabulario',
+    fr: 'Vocabulaire',
+    it: 'Vocabolario'
+  }
+};
+
 export const categoryTranslations: Record<string, Record<SupportedLanguage, string>> = {
   'animals': {
     en: 'Animals',
