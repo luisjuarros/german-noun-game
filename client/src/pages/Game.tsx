@@ -24,9 +24,14 @@ export default function Game() {
     ? incorrectWords[currentWordIndex]
     : germanNouns[currentWordIndex];
 
-  const translation = translations[currentWord.translation ?? '']?.[language] ?? currentWord.translation;
+  // Safe access to translation
+  const translation = currentWord?.translation 
+    ? translations[currentWord.translation]?.[language] ?? currentWord.translation
+    : '';
 
   const handleGenderSelect = (gender: string) => {
+    if (!currentWord) return;
+
     setSelectedGender(gender);
     const correct = gender === currentWord.gender;
     setIsCorrect(correct);
@@ -84,6 +89,8 @@ export default function Game() {
     setIsCorrect(null);
     setGameComplete(false);
   };
+
+  if (!currentWord) return null;
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative">
