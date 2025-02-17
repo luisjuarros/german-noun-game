@@ -1,4 +1,25 @@
-export type SupportedLanguage = 'en' | 'es' | 'fr' | 'it';
+import { SupportedLanguage } from '@/types/languages';
+
+export const categoryTranslations: Record<string, Record<SupportedLanguage, string>> = {
+  'animals': {
+    en: 'Animals',
+    es: 'Animales',
+    fr: 'Animaux',
+    it: 'Animali'
+  },
+  'home': {
+    en: 'Home',
+    es: 'Hogar',
+    fr: 'Maison',
+    it: 'Casa'
+  },
+  'work': {
+    en: 'Work',
+    es: 'Trabajo',
+    fr: 'Travail',
+    it: 'Lavoro'
+  }
+};
 
 export const translations: Record<string, Record<SupportedLanguage, string>> = {
   'house': {
