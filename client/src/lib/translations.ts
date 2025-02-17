@@ -1,6 +1,15 @@
 import { SupportedLanguage } from '@/types/languages';
 
-export const uiTranslations: Record<string, Record<SupportedLanguage, string>> = {
+type TranslationRecord = Record<SupportedLanguage, string>;
+
+export const uiTranslations: Record<string, TranslationRecord> & {
+  filter_label: TranslationRecord;
+  sort_label: TranslationRecord;
+  all_types: TranslationRecord;
+  most_popular: TranslationRecord;
+  practice_words: TranslationRecord;
+  page_title: TranslationRecord;
+} = {
   'filter_label': {
     en: 'Filter by type of words',
     es: 'Filtrar por tipo de palabras',
@@ -39,7 +48,11 @@ export const uiTranslations: Record<string, Record<SupportedLanguage, string>> =
   }
 };
 
-export const categoryTranslations: Record<string, Record<SupportedLanguage, string>> = {
+export const categoryTranslations: Record<string, TranslationRecord> & {
+  animals: TranslationRecord;
+  home: TranslationRecord;
+  work: TranslationRecord;
+} = {
   'animals': {
     en: 'Animals',
     es: 'Animales',
@@ -60,7 +73,7 @@ export const categoryTranslations: Record<string, Record<SupportedLanguage, stri
   }
 };
 
-export const translations: Record<string, Record<SupportedLanguage, string>> = {
+export const translations: Record<string, TranslationRecord> = {
   'house': {
     en: 'house',
     es: 'casa',
