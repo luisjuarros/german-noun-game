@@ -34,8 +34,14 @@ export default function Game() {
 
     setMascotState(correct ? 'happy' : 'encouraging');
 
-    if (!correct && !incorrectWords.includes(currentWord)) {
-      setIncorrectWords(prev => [...prev, currentWord]);
+    if (!correct) {
+      // Only add to incorrect words if not already there and we're in the main phase
+      if (!gameComplete && !incorrectWords.includes(currentWord)) {
+        setIncorrectWords(prev => [...prev, currentWord]);
+      }
+    } else if (gameComplete) {
+      // Remove the word from incorrect words when answered correctly in retry phase
+      setIncorrectWords(prev => prev.filter(word => word !== currentWord));
     }
 
     setTimeout(() => {
@@ -50,16 +56,22 @@ export default function Game() {
     setIsCorrect(null);
 
     if (gameComplete) {
-      if (currentWordIndex < incorrectWords.length - 1) {
-        setCurrentWordIndex(prev => prev + 1);
-      } else if (incorrectWords.length > 0) {
-        setIncorrectWords([]);
+      if (incorrectWords.length === 0) {
+        // All words have been answered correctly
         setGameComplete(false);
+        setCurrentWordIndex(0);
+      } else if (currentWordIndex < incorrectWords.length - 1) {
+        // Move to next incorrect word
+        setCurrentWordIndex(prev => prev + 1);
+      } else {
+        // Start over with remaining incorrect words
         setCurrentWordIndex(0);
       }
     } else if (currentWordIndex < germanNouns.length - 1) {
+      // Still in main phase
       setCurrentWordIndex(prev => prev + 1);
     } else {
+      // Finished main phase, start retry phase if there are incorrect words
       setGameComplete(true);
       setCurrentWordIndex(0);
     }
@@ -91,8 +103,8 @@ export default function Game() {
       <Card className="w-full max-w-lg relative z-20">
         <CardContent className="pt-6 flex flex-col items-center gap-8">
           <ProgressBar 
-            current={gameComplete ? incorrectWords.length - currentWordIndex : currentWordIndex + 1} 
-            total={gameComplete ? incorrectWords.length : germanNouns.length} 
+            current={gameComplete ? incorrectWords.length === 0 ? germanNouns.length : incorrectWords.length - currentWordIndex : currentWordIndex + 1} 
+            total={gameComplete ? incorrectWords.length === 0 ? germanNouns.length : incorrectWords.length : germanNouns.length} 
           />
 
           <AnimatePresence mode="wait">
