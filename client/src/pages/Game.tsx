@@ -63,6 +63,7 @@ export default function Game() {
     setTimeout(() => {
       setShowFeedback(false);
       setMascotState('idle');
+      setSelectedGender(null); // Always reset selectedGender
       if (!(gameComplete && correct)) { // Only call nextWord if we didn't just remove a word
         nextWord();
       }
