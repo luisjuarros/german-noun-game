@@ -36,7 +36,6 @@ export default function Game() {
     const correct = gender === currentWord.gender;
     setIsCorrect(correct);
     setShowFeedback(true);
-
     setMascotState(correct ? 'happy' : 'encouraging');
 
     if (!correct) {
@@ -46,13 +45,27 @@ export default function Game() {
       }
     } else if (gameComplete) {
       // Remove the word from incorrect words when answered correctly in retry phase
-      setIncorrectWords(prev => prev.filter(word => word !== currentWord));
+      setIncorrectWords(prev => {
+        const newIncorrect = prev.filter(word => word !== currentWord);
+        // If removing the last word, reset game
+        if (newIncorrect.length === 0) {
+          setGameComplete(false);
+          setCurrentWordIndex(0);
+        } else if (currentWordIndex >= newIncorrect.length) {
+          // If we removed a word and the current index is now out of bounds,
+          // wrap around to the beginning
+          setCurrentWordIndex(0);
+        }
+        return newIncorrect;
+      });
     }
 
     setTimeout(() => {
       setShowFeedback(false);
       setMascotState('idle');
-      nextWord();
+      if (!(gameComplete && correct)) { // Only call nextWord if we didn't just remove a word
+        nextWord();
+      }
     }, 500);
   };
 
@@ -66,8 +79,7 @@ export default function Game() {
         setGameComplete(false);
         setCurrentWordIndex(0);
       } else {
-        // Stay in retry mode with remaining incorrect words
-        // If we're at the end of the list, start over from beginning
+        // Move to next word in retry mode
         setCurrentWordIndex(prev => 
           prev >= incorrectWords.length - 1 ? 0 : prev + 1
         );
