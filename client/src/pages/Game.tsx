@@ -65,12 +65,12 @@ export default function Game() {
         // All words have been answered correctly
         setGameComplete(false);
         setCurrentWordIndex(0);
-      } else if (currentWordIndex >= incorrectWords.length - 1) {
-        // Reached the end of incorrect words, start over
-        setCurrentWordIndex(0);
       } else {
-        // Move to next incorrect word
-        setCurrentWordIndex(prev => prev + 1);
+        // Stay in retry mode with remaining incorrect words
+        // If we're at the end of the list, start over from beginning
+        setCurrentWordIndex(prev => 
+          prev >= incorrectWords.length - 1 ? 0 : prev + 1
+        );
       }
     } else if (currentWordIndex < germanNouns.length - 1) {
       // Still in main phase
